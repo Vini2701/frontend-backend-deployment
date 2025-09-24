@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from 'react'
+import Books from './components/Books'
 
-export default function App() {
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    fetch(import.meta.env.VITE_API_BASE + "/api/books")
-      .then(res => res.json())
-      .then(data => setBooks(data));
-  }, []);
-
+export default function App(){
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Book List</h1>
-      <ul>
-        {books.map((b, i) => (
-          <li key={i}>{b.title} by {b.author}</li>
-        ))}
-      </ul>
+    <div style={{ padding: 24, fontFamily: 'Arial, sans-serif' }}>
+      <h1>My Bookstore</h1>
+      <Books />
     </div>
-  );
+  )
 }
