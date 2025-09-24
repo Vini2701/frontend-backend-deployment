@@ -6,12 +6,8 @@ on:
       - main
 
 jobs:
-  build-frontend:
-    name: Build Frontend
+  build-and-deploy:
     runs-on: ubuntu-latest
-    outputs:
-      dist-path: ${{ steps.set-dist.outputs.dist_path }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,28 +27,6 @@ jobs:
           cd frontend
           npm run build
 
-      - name: Set dist output path
-        id: set-dist
-        run: echo "dist_path=frontend/dist" >> $GITHUB_OUTPUT
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: frontend/dist
-
-  deploy-frontend:
-    name: Deploy Frontend
-    needs: build-frontend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist
-          path: frontend/dist
-
       - name: Deploy to Azure Static Web App
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -60,8 +34,6 @@ jobs:
           repo_token: ${{ secrets.AZURE_GITHUB_TOKEN }}
           action: "upload"
           app_location: "frontend"
-          output_location: "frontend-backend-deployment/frontend/dist"
+          output_location: "frontend/dist"
           api_location: ""
-
-
-#dkdkdk
+          
